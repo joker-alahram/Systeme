@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>متجر الأهرام</title>
+  <style>
+    :root{
+      --bg:#f6f8fc;
+      --panel:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --line:#e5e7eb;
+      --brand:#0ea5e9;
+      --brand-2:#2563eb;
+      --success:#16a34a;
+      --danger:#dc2626;
+      --shadow:0 12px 40px rgba(15,23,42,.08);
+      --radius:22px;
+      --radius-sm:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:
+      radial-gradient(circle at top left, rgba(14,165,233,.10), transparent 28%),
+      radial-gradient(circle at top right, rgba(37,99,235,.10), transparent 24%),
+      var(--bg);
+      color:var(--text);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    }
+    body{min-height:100vh}
+    button,input,select,textarea{font:inherit}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1400px;margin:0 auto;padding:18px 14px 92px}
+    .topbar{
+      position:sticky;top:0;z-index:40;
+      backdrop-filter:blur(16px);
+      background:rgba(246,248,252,.82);
+      border-bottom:1px solid rgba(229,231,235,.85);
+      margin:-18px -14px 18px;
+      padding:14px;
+    }
+    .topbar-inner{
+      max-width:1400px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;min-width:220px;
+    }
+    .logo{
+      width:46px;height:46px;border-radius:16px;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2));
+      display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)
+    }
+    .brand h1{margin:0;font-size:1.05rem;line-height:1.1}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+    .searchbar{
+      flex:1;min-width:260px;position:relative;
+    }
+    .searchbar input{
+      width:100%;padding:14px 16px 14px 48px;border:1px solid var(--line);border-radius:18px;
+      background:rgba(255,255,255,.9);outline:none;box-shadow:0 8px 28px rgba(15,23,42,.04);
+    }
+    [dir="rtl"] .searchbar input{padding:14px 48px 14px 16px}
+    .search-ico{
+      position:absolute;top:50%;transform:translateY(-50%);
+      left:16px;opacity:.55;font-size:18px;pointer-events:none
+    }
+    [dir="rtl"] .search-ico{left:auto;right:16px}
+    .tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .select, .chip-btn, .btn, .icon-btn{
+      border:1px solid var(--line);background:var(--panel);border-radius:16px;
+      padding:12px 14px;box-shadow:0 8px 24px rgba(15,23,42,.04);cursor:pointer;
+    }
+    .select{padding:12px 42px 12px 14px}
+    [dir="rtl"] .select{padding:12px 14px 12px 42px}
+    .icon-btn{
+      width:48px;height:48px;padding:0;display:grid;place-items:center;
+    }
+    .hero{
+      display:grid;grid-template-columns:1.5fr .9fr;gap:16px;align-items:stretch;margin-bottom:18px;
+    }
+    .hero-card, .stats-card, .panel{
+      background:rgba(255,255,255,.88);border:1px solid rgba(229,231,235,.9);border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .hero-card{padding:22px}
+    .hero-card h2{margin:0 0 10px;font-size:1.9rem;line-height:1.15}
+    .hero-card p{margin:0;color:var(--muted);font-size:1rem;max-width:68ch}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;border:none;padding:13px 16px;
+    }
+    .btn.secondary{background:#fff;color:var(--text);border:1px solid var(--line)}
+    .stats-card{
+      padding:16px;display:grid;gap:12px;
+    }
+    .stat{
+      padding:15px;border-radius:18px;background:linear-gradient(180deg,#fff,rgba(248,250,252,.85));border:1px solid var(--line)
+    }
+    .stat .v{font-size:1.45rem;font-weight:900}
+    .stat .l{color:var(--muted);font-size:.92rem;margin-top:4px}
+    .filters{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 18px
+    }
+    .chips{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .chip-btn{
+      padding:10px 14px;border-radius:999px;background:#fff;color:var(--text);
+    }
+    .chip-btn.active{
+      background:linear-gradient(135deg,rgba(14,165,233,.13),rgba(37,99,235,.12));
+      border-color:rgba(14,165,233,.35);
+      color:#0f4c81;font-weight:700;
+    }
+    .grid{
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;
+    }
+    .card{
+      background:rgba(255,255,255,.92);border:1px solid rgba(229,231,235,.95);border-radius:22px;
+      overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:100%;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{transform:translateY(-3px);box-shadow:0 16px 42px rgba(15,23,42,.12)}
+    .thumb{
+      position:relative;background:linear-gradient(135deg,#f8fbff,#edf5ff);aspect-ratio:1.15/1;display:grid;place-items:center;
+      border-bottom:1px solid var(--line);overflow:hidden;
+    }
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .badge-row{
+      position:absolute;top:12px;inset-inline:12px;display:flex;justify-content:space-between;gap:10px;align-items:flex-start
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
+      background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.9);backdrop-filter:blur(10px);
+      font-size:.78rem;font-weight:700;color:#1e293b;max-width:70%;
+    }
+    .badge.gray{color:#475569}
+    .body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+    .title{font-size:1rem;line-height:1.35;margin:0;font-weight:800;min-height:2.7em}
+    .sub{font-size:.9rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px}
+    .price-row{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:auto}
+    .price{font-size:1.2rem;font-weight:900;color:var(--success)}
+    .meta{font-size:.83rem;color:var(--muted)}
+    .actions{display:flex;gap:10px;align-items:center}
+    .add{
+      flex:1;border:none;border-radius:16px;padding:12px 14px;font-weight:800;cursor:pointer;color:#fff;
+      background:linear-gradient(135deg,#10b981,#059669);
+    }
+    .mini{
+      border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px 12px;min-width:46px;cursor:pointer
+    }
+    .empty{
+      grid-column:1/-1;background:rgba(255,255,255,.92);border:1px dashed #cbd5e1;border-radius:24px;
+      padding:42px 18px;text-align:center;color:var(--muted)
+    }
+    .drawer-overlay, .modal-overlay{
+      position:fixed;inset:0;background:rgba(15,23,42,.42);display:none;z-index:90;
+    }
+    .drawer-overlay.show, .modal-overlay.show{display:block}
+    .drawer{
+      position:fixed;top:12px;bottom:12px;inset-inline-end:12px;max-width:460px;width:min(92vw,460px);
+      background:rgba(255,255,255,.96);border:1px solid rgba(229,231,235,.95);border-radius:28px;
+      box-shadow:0 24px 72px rgba(15,23,42,.22);z-index:100;transform:translateX(110%);transition:transform .24s ease;
+      display:flex;flex-direction:column;overflow:hidden;
+    }
+    [dir="rtl"] .drawer{inset-inline-end:auto;inset-inline-start:12px;transform:translateX(-110%)}
+    .drawer.show{transform:translateX(0)}
+    .drawer-head,.modal-head{
+      padding:18px 18px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px
+    }
+    .drawer-head h3,.modal-head h3{margin:0;font-size:1.1rem}
+    .drawer-body{padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;flex:1}
+    .cart-item{
+      border:1px solid var(--line);border-radius:20px;padding:12px;background:#fff;display:grid;grid-template-columns:72px 1fr;gap:12px
+    }
+    .cart-thumb{
+      width:72px;height:72px;border-radius:18px;overflow:hidden;background:#f8fafc;border:1px solid var(--line)
+    }
+    .cart-thumb img{width:100%;height:100%;object-fit:cover}
+    .cart-title{font-weight:800;margin:0 0 6px;font-size:.98rem;line-height:1.3}
+    .cart-meta{color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:8px}
+    .qty{
+      display:flex;align-items:center;gap:8px;margin-top:10px
+    }
+    .qty button{
+      width:34px;height:34px;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:pointer
+    }
+    .qty span{min-width:28px;text-align:center;font-weight:800}
+    .cart-foot{
+      padding:16px;border-top:1px solid var(--line);background:linear-gradient(180deg,#fff,#f8fafc);
+      display:flex;flex-direction:column;gap:12px
+    }
+    .totals{
+      display:flex;justify-content:space-between;align-items:center;font-weight:900
+    }
+    .checkout-btn{
+      width:100%;border:none;border-radius:18px;padding:14px 16px;font-weight:900;cursor:pointer;color:#fff;
+      background:linear-gradient(135deg,#f97316,#ea580c);
+    }
+    .ghost-btn{
+      width:100%;border:1px solid var(--line);border-radius:18px;padding:13px 16px;font-weight:800;cursor:pointer;background:#fff
+    }
+    .checkout{
+      position:fixed;inset:0;z-index:110;display:none;place-items:center;padding:18px
+    }
+    .checkout.show{display:grid}
+    .checkout-card{
+      width:min(100%,760px);max-height:92vh;overflow:auto;background:#fff;border-radius:28px;box-shadow:0 28px 80px rgba(15,23,42,.28);
+      border:1px solid rgba(229,231,235,.95)
+    }
+    .form{padding:18px;display:grid;gap:14px}
+    .field{display:grid;gap:8px}
+    .field label{font-weight:800;font-size:.92rem}
+    .field input,.field textarea{
+      width:100%;padding:14px 14px;border-radius:16px;border:1px solid var(--line);background:#fff;outline:none
+    }
+    .field textarea{min-height:96px;resize:vertical}
+    .help{color:var(--muted);font-size:.84rem}
+    .errors{color:var(--danger);font-size:.9rem;font-weight:700;display:none}
+    .errors.show{display:block}
+    .checkout-actions{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px
+    }
+    .bottom-lang{
+      position:fixed;bottom:14px;inset-inline:0;display:flex;justify-content:center;z-index:80;pointer-events:none
+    }
+    .lang-pill{
+      pointer-events:auto;
+      border:1px solid rgba(229,231,235,.95);background:rgba(255,255,255,.92);backdrop-filter:blur(14px);
+      box-shadow:var(--shadow);border-radius:999px;padding:10px 14px;display:flex;align-items:center;gap:10px
+    }
+    .lang-pill button{
+      border:none;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;border-radius:999px;padding:10px 14px;
+      font-weight:800;cursor:pointer;min-width:76px
+    }
+    .cart-fab{
+      position:fixed;bottom:14px;inset-inline-end:14px;z-index:85;
+      width:58px;height:58px;border-radius:18px;border:none;cursor:pointer;
+      background:linear-gradient(135deg,#111827,#334155);color:#fff;box-shadow:var(--shadow);display:grid;place-items:center
+    }
+    [dir="rtl"] .cart-fab{inset-inline-end:auto;inset-inline-start:14px}
+    .count{
+      position:absolute;top:-6px;inset-inline-end:-6px;background:#ef4444;color:#fff;border-radius:999px;
+      min-width:22px;height:22px;padding:0 6px;display:grid;place-items:center;font-size:.75rem;font-weight:800;border:2px solid #fff
+    }
+    .toast{
+      position:fixed;top:18px;inset-inline:0;display:flex;justify-content:center;z-index:120;pointer-events:none
+    }
+    .toast > div{
+      pointer-events:auto;background:#0f172a;color:#fff;border-radius:999px;padding:12px 16px;
+      box-shadow:0 18px 42px rgba(15,23,42,.22);max-width:min(92vw,680px);font-weight:700;display:none
+    }
+    .toast > div.show{display:block}
+    .loader{
+      display:grid;place-items:center;padding:32px;color:var(--muted)
+    }
+    .skeleton{
+      border-radius:18px;background:linear-gradient(90deg,#eef2f7,#f8fafc,#eef2f7);
+      background-size:200% 100%;animation:shimmer 1.3s infinite linear;
+    }
+    @keyframes shimmer{0%{background-position:0 0}100%{background-position:-200% 0}}
+    .sk-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .sk-card{height:340px;border-radius:22px}
+    @media (max-width: 1180px){
+      .grid,.sk-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .hero{grid-template-columns:1fr}
+    }
+    @media (max-width: 820px){
+      .grid,.sk-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .topbar-inner{gap:10px}
+      .brand{min-width:unset}
+    }
+    @media (max-width: 560px){
+      .wrap{padding:12px 10px 104px}
+      .topbar{margin:-12px -10px 16px;padding:10px}
+      .grid,.sk-grid{grid-template-columns:1fr}
+      .hero-card h2{font-size:1.55rem}
+      .checkout-actions{grid-template-columns:1fr}
+      .drawer{top:8px;bottom:8px;inset-inline:8px;width:auto;max-width:none}
+      [dir="rtl"] .drawer,[dir="ltr"] .drawer{transform:translateY(110%);inset-inline:auto}
+      .drawer.show{transform:translateY(0)}
+    }
+  </style>
+</head>
+<body>
+  <div class="toast" aria-live="polite"><div id="toast"></div></div>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1 id="uiTitle">متجر الأهرام</h1>
+          <p id="uiSubtitle">تسوّق بسهولة، وارسِل الطلب مباشرة على واتساب</p>
+        </div>
+      </div>
+
+      <div class="searchbar">
+        <span class="search-ico">⌕</span>
+        <input id="searchInput" type="search" placeholder="ابحث عن منتج..." autocomplete="off" />
+      </div>
+
+      <div class="tools">
+        <select id="brandFilter" class="select" aria-label="brand filter"></select>
+        <select id="categoryFilter" class="select" aria-label="category filter"></select>
+        <select id="sortFilter" class="select" aria-label="sort filter">
+          <option value="featured">الأكثر ملاءمة</option>
+          <option value="name-asc">الاسم: أ → ي</option>
+          <option value="name-desc">الاسم: ي → أ</option>
+          <option value="price-asc">السعر: أقل → أعلى</option>
+          <option value="price-desc">السعر: أعلى → أقل</option>
+        </select>
+        <button class="icon-btn" id="resetBtn" title="Reset">↺</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-card">
+        <h2 id="heroHeading">متجر احترافي سريع ومصمم للبيع الحقيقي</h2>
+        <p id="heroText">
+          يعرض المنتجات من Google Sheets، يدعم العربية والإنجليزية، ويحفظ السلة، ثم يرسل الطلب كاملًا إلى واتساب مع بيانات العميل المطلوبة.
+        </p>
+        <div class="hero-actions">
+          <button class="btn" id="openCartBtn">🛒 <span id="cartBtnText">السلة</span></button>
+          <button class="btn secondary" id="scrollToProductsBtn">⬇ <span id="browseText">تصفّح المنتجات</span></button>
+        </div>
+      </div>
+
+      <div class="stats-card">
+        <div class="stat">
+          <div class="v" id="productsCount">0</div>
+          <div class="l" id="productsLabel">منتج متاح</div>
+        </div>
+        <div class="stat">
+          <div class="v" id="brandsCount">0</div>
+          <div class="l" id="brandsLabel">شركة / براند</div>
+        </div>
+        <div class="stat">
+          <div class="v" id="cartCountTop">0</div>
+          <div class="l" id="cartLabelTop">إجمالي القطع في السلة</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="filters">
+      <div class="chips" id="quickChips"></div>
+    </div>
+
+    <section id="productGrid" class="grid" aria-live="polite"></section>
+  </div>
+
+  <button class="cart-fab" id="cartFab" aria-label="cart">
+    🛒
+    <span class="count" id="cartCountFab">0</span>
+  </button>
+
+  <div class="bottom-lang">
+    <div class="lang-pill">
+      <span id="langLabel">اختار لغتك</span>
+      <button id="langToggleBtn">EN</button>
+    </div>
+  </div>
+
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer-head">
+      <h3 id="cartTitle">السلة</h3>
+      <button class="icon-btn" id="closeCartBtn">✕</button>
+    </div>
+    <div class="drawer-body" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="totals">
+        <span id="totalLabel">الإجمالي</span>
+        <span id="cartTotal">0</span>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn">إرسال الطلب</button>
+      <button class="ghost-btn" id="clearCartBtn">تفريغ السلة</button>
+    </div>
+  </aside>
+
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <section class="checkout" id="checkoutModal" aria-hidden="true">
+    <div class="checkout-card">
+      <div class="modal-head">
+        <h3 id="checkoutTitle">بيانات الطلب</h3>
+        <button class="icon-btn" id="closeCheckoutBtn">✕</button>
+      </div>
+      <form class="form" id="checkoutForm">
+        <div class="field">
+          <label id="nameLabel" for="custName">الاسم</label>
+          <input id="custName" type="text" required />
+        </div>
+        <div class="field">
+          <label id="phoneLabel" for="custPhone">رقم التليفون</label>
+          <input id="custPhone" type="tel" required />
+        </div>
+        <div class="field">
+          <label id="addressLabel" for="custAddress">العنوان</label>
+          <textarea id="custAddress" required></textarea>
+        </div>
+        <div class="field">
+          <label id="locationLabel" for="custLocation">اللوكيشن (اختياري)</label>
+          <input id="custLocation" type="text" />
+        </div>
+        <div class="errors" id="formErrors"></div>
+        <div class="checkout-actions">
+          <button class="btn secondary" type="button" id="backToCartBtn">رجوع للسلة</button>
+          <button class="btn" type="submit" id="sendWhatsAppBtn">إرسال على واتساب</button>
+        </div>
+        <div class="help" id="checkoutHelp">سيتم إنشاء رسالة منظمة بكل تفاصيل المنتجات والعميل.</div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxRoCcjnQU9BPt7ynRZRQUD5qgYe4INO3T67PRSQcHV2mBKwwNNy15Zt_yzp5xhF2RN/exec";
+    const WHATSAPP_NUMBER = "201552670465";
+    const STORAGE_KEYS = { lang: "alahram_lang", cart: "alahram_cart" };
+    const PLACEHOLDER_IMAGE = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="700" viewBox="0 0 800 700">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="#0ea5e9"/>
+            <stop offset="100%" stop-color="#2563eb"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="700" rx="48" fill="url(#g)"/>
+        <circle cx="400" cy="250" r="120" fill="rgba(255,255,255,0.18)"/>
+        <path d="M250 458l82-92 88 82 68-70 112 124H250z" fill="rgba(255,255,255,0.9)"/>
+        <text x="400" y="590" font-family="Arial, sans-serif" font-size="46" font-weight="700" text-anchor="middle" fill="white">Alahram Store</text>
+      </svg>
+    `);
+
+    const i18n = {
+      ar: {
+        title: "متجر الأهرام",
+        subtitle: "تسوّق بسهولة، وارسِل الطلب مباشرة على واتساب",
+        search: "ابحث عن منتج...",
+        brandAll: "كل الشركات",
+        categoryAll: "كل التصنيفات",
+        featured: "الأكثر ملاءمة",
+        nameAsc: "الاسم: أ → ي",
+        nameDesc: "الاسم: ي → أ",
+        priceAsc: "السعر: أقل → أعلى",
+        priceDesc: "السعر: أعلى → أقل",
+        productsAvailable: "منتج متاح",
+        brands: "شركة / براند",
+        cartUnits: "إجمالي القطع في السلة",
+        basket: "السلة",
+        browse: "تصفّح المنتجات",
+        mainHeadline: "متجر احترافي سريع ومصمم للبيع الحقيقي",
+        subHeadline: "يعرض المنتجات من Google Sheets، يدعم العربية والإنجليزية، ويحفظ السلة، ثم يرسل الطلب كاملًا إلى واتساب مع بيانات العميل المطلوبة.",
+        addToCart: "أضف للسلة",
+        price: "السعر",
+        code: "الكود",
+        pack: "التعبئة",
+        size: "المقاس",
+        brand: "البراند",
+        category: "التصنيف",
+        inCart: "في السلة",
+        cart: "السلة",
+        total: "الإجمالي",
+        checkout: "إرسال الطلب",
+        clearCart: "تفريغ السلة",
+        orderData: "بيانات الطلب",
+        customerName: "الاسم",
+        phone: "رقم التليفون",
+        address: "العنوان",
+        location: "اللوكيشن (اختياري)",
+        back: "رجوع للسلة",
+        sendWhatsapp: "إرسال على واتساب",
+        formHelp: "سيتم إنشاء رسالة منظمة بكل تفاصيل المنتجات والعميل.",
+        chooseLang: "اختار لغتك",
+        requiredFields: "الاسم، رقم التليفون، والعنوان مطلوبين.",
+        cartEmpty: "السلة فارغة",
+        noResults: "لا توجد منتجات مطابقة للبحث.",
+        loadError: "تعذر تحميل البيانات. تأكد من رابط الـ API.",
+        productCount: (n) => `${n} منتج متاح`,
+        brandCount: (n) => `${n} شركة / براند`,
+        cartItems: (n) => `${n} قطعة في السلة`,
+        added: "تمت الإضافة للسلة",
+        removed: "تمت الإزالة",
+        cartCleared: "تم تفريغ السلة",
+        orderSent: "تم تجهيز رسالة واتساب",
+      },
+      en: {
+        title: "Alahram Store",
+        subtitle: "Shop easily and send the order directly to WhatsApp",
+        search: "Search for a product...",
+        brandAll: "All brands",
+        categoryAll: "All categories",
+        featured: "Best match",
+        nameAsc: "Name: A → Z",
+        nameDesc: "Name: Z → A",
+        priceAsc: "Price: Low → High",
+        priceDesc: "Price: High → Low",
+        productsAvailable: "products available",
+        brands: "brands",
+        cartUnits: "total units in cart",
+        basket: "Cart",
+        browse: "Browse products",
+        mainHeadline: "A fast professional store built for real selling",
+        subHeadline: "Loads products from Google Sheets, supports Arabic and English, keeps the cart, then sends a complete WhatsApp order with customer details.",
+        addToCart: "Add to cart",
+        price: "Price",
+        code: "Code",
+        pack: "Pack",
+        size: "Size",
+        brand: "Brand",
+        category: "Category",
+        inCart: "In cart",
+        cart: "Cart",
+        total: "Total",
+        checkout: "Send order",
+        clearCart: "Clear cart",
+        orderData: "Order details",
+        customerName: "Customer name",
+        phone: "Phone number",
+        address: "Address",
+        location: "Location (optional)",
+        back: "Back to cart",
+        sendWhatsapp: "Send on WhatsApp",
+        formHelp: "A clean message will be generated with all products and customer details.",
+        chooseLang: "Choose your language",
+        requiredFields: "Name, phone number, and address are required.",
+        cartEmpty: "Cart is empty",
+        noResults: "No products match your search.",
+        loadError: "Could not load data. Check the API URL.",
+        productCount: (n) => `${n} products available`,
+        brandCount: (n) => `${n} brands`,
+        cartItems: (n) => `${n} units in cart`,
+        added: "Added to cart",
+        removed: "Removed",
+        cartCleared: "Cart cleared",
+        orderSent: "WhatsApp message prepared",
+      }
+    };
+
+    const state = {
+      lang: localStorage.getItem(STORAGE_KEYS.lang) || "ar",
+      products: [],
+      filtered: [],
+      cart: loadCart(),
+      search: "",
+      brand: "all",
+      category: "all",
+      sort: "featured",
+      loading: true
+    };
+
+    const els = {
+      uiTitle: document.getElementById("uiTitle"),
+      uiSubtitle: document.getElementById("uiSubtitle"),
+      searchInput: document.getElementById("searchInput"),
+      brandFilter: document.getElementById("brandFilter"),
+      categoryFilter: document.getElementById("categoryFilter"),
+      sortFilter: document.getElementById("sortFilter"),
+      resetBtn: document.getElementById("resetBtn"),
+      quickChips: document.getElementById("quickChips"),
+      productGrid: document.getElementById("productGrid"),
+      productsCount: document.getElementById("productsCount"),
+      brandsCount: document.getElementById("brandsCount"),
+      cartCountTop: document.getElementById("cartCountTop"),
+      cartCountFab: document.getElementById("cartCountFab"),
+      cartTotal: document.getElementById("cartTotal"),
+      openCartBtn: document.getElementById("openCartBtn"),
+      cartFab: document.getElementById("cartFab"),
+      cartDrawer: document.getElementById("cartDrawer"),
+      drawerOverlay: document.getElementById("drawerOverlay"),
+      closeCartBtn: document.getElementById("closeCartBtn"),
+      cartItems: document.getElementById("cartItems"),
+      checkoutBtn: document.getElementById("checkoutBtn"),
+      clearCartBtn: document.getElementById("clearCartBtn"),
+      checkoutModal: document.getElementById("checkoutModal"),
+      modalOverlay: document.getElementById("modalOverlay"),
+      closeCheckoutBtn: document.getElementById("closeCheckoutBtn"),
+      backToCartBtn: document.getElementById("backToCartBtn"),
+      checkoutForm: document.getElementById("checkoutForm"),
+      custName: document.getElementById("custName"),
+      custPhone: document.getElementById("custPhone"),
+      custAddress: document.getElementById("custAddress"),
+      custLocation: document.getElementById("custLocation"),
+      formErrors: document.getElementById("formErrors"),
+      sendWhatsappBtn: document.getElementById("sendWhatsAppBtn"),
+      totalLabel: document.getElementById("totalLabel"),
+      cartTitle: document.getElementById("cartTitle"),
+      checkoutTitle: document.getElementById("checkoutTitle"),
+      nameLabel: document.getElementById("nameLabel"),
+      phoneLabel: document.getElementById("phoneLabel"),
+      addressLabel: document.getElementById("addressLabel"),
+      locationLabel: document.getElementById("locationLabel"),
+      langLabel: document.getElementById("langLabel"),
+      langToggleBtn: document.getElementById("langToggleBtn"),
+      heroHeading: document.getElementById("heroHeading"),
+      heroText: document.getElementById("heroText"),
+      cartBtnText: document.getElementById("cartBtnText"),
+      browseText: document.getElementById("browseText"),
+      productsLabel: document.getElementById("productsLabel"),
+      brandsLabel: document.getElementById("brandsLabel"),
+      cartLabelTop: document.getElementById("cartLabelTop"),
+      checkoutHelp: document.getElementById("checkoutHelp")
+    };
+
+    function t(key, ...args) {
+      const value = i18n[state.lang][key];
+      return typeof value === "function" ? value(...args) : value;
+    }
+
+    function loadCart() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEYS.cart) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem(STORAGE_KEYS.cart, JSON.stringify(state.cart));
+    }
+
+    function setLang(lang) {
+      state.lang = lang === "en" ? "en" : "ar";
+      localStorage.setItem(STORAGE_KEYS.lang, state.lang);
+      document.documentElement.lang = state.lang === "ar" ? "ar" : "en";
+      document.documentElement.dir = state.lang === "ar" ? "rtl" : "ltr";
+      els.langToggleBtn.textContent = state.lang === "ar" ? "EN" : "AR";
+      updateStaticText();
+      renderAll();
+    }
+
+    function updateStaticText() {
+      document.title = t("title");
+      els.uiTitle.textContent = t("title");
+      els.uiSubtitle.textContent = t("subtitle");
+      els.searchInput.placeholder = t("search");
+      els.productsLabel.textContent = t("productsAvailable");
+      els.brandsLabel.textContent = t("brands");
+      els.cartLabelTop.textContent = t("cartUnits");
+      els.cartBtnText.textContent = t("basket");
+      els.browseText.textContent = t("browse");
+      els.heroHeading.textContent = t("mainHeadline");
+      els.heroText.textContent = t("subHeadline");
+      els.cartTitle.textContent = t("cart");
+      els.checkoutTitle.textContent = t("orderData");
+      els.nameLabel.textContent = t("customerName");
+      els.phoneLabel.textContent = t("phone");
+      els.addressLabel.textContent = t("address");
+      els.locationLabel.textContent = t("location");
+      els.totalLabel.textContent = t("total");
+      els.clearCartBtn.textContent = t("clearCart");
+      els.checkoutBtn.textContent = t("checkout");
+      els.backToCartBtn.textContent = t("back");
+      els.sendWhatsappBtn.textContent = t("sendWhatsapp");
+      els.checkoutHelp.textContent = t("formHelp");
+      els.langLabel.textContent = t("chooseLang");
+      els.sortFilter.innerHTML = `
+        <option value="featured">${t("featured")}</option>
+        <option value="name-asc">${t("nameAsc")}</option>
+        <option value="name-desc">${t("nameDesc")}</option>
+        <option value="price-asc">${t("priceAsc")}</option>
+        <option value="price-desc">${t("priceDesc")}</option>
+      `;
+      document.getElementById("productsCount").textContent = state.products.length;
+      document.getElementById("brandsCount").textContent = uniqueBrands(state.products).length;
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function normalizeText(value) {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/[\u064B-\u065F\u0670]/g, "")
+        .replace(/[ـ]/g, "")
+        .trim();
+    }
+
+    function safeNumber(value) {
+      const n = Number(String(value ?? "").replace(/,/g, "").trim());
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function formatMoney(value) {
+      const currency = new Intl.NumberFormat(state.lang === "ar" ? "ar-EG" : "en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+      return `${currency.format(Math.round(safeNumber(value)))} EGP`;
+    }
+
+    function getName(p) {
+      const ar = String(p.product_ar || p.desc_ar || p.product_en || p.item_code || "—").trim();
+      const en = String(p.product_en || p.desc_en || p.product_ar || p.item_code || "—").trim();
+      return state.lang === "ar" ? ar : en;
+    }
+
+    function getDisplayBrand(p) {
+      return String(p.brand || "").trim();
+    }
+
+    function getDisplayPrice(p) {
+      const retail = safeNumber(p.rsp_egp);
+      const base = safeNumber(p.ptt_egp);
+      return retail > 0 ? retail : base;
+    }
+
+    function getPriceBadge(p) {
+      const retail = safeNumber(p.rsp_egp);
+      const base = safeNumber(p.ptt_egp);
+      if (retail > 0 && base > 0 && retail !== base) {
+        return `${formatMoney(retail)} • ${formatMoney(base)}`;
+      }
+      return formatMoney(retail > 0 ? retail : base);
+    }
+
+    function uniqueBrands(items) {
+      return [...new Set(items.map(i => getDisplayBrand(i)).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    }
+
+    function uniqueCategories(items) {
+      return [...new Set(items.map(i => String(i.category || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    }
+
+    function skuLabel(p) {
+      return String(p.sku_id || p.item_code || "").trim();
+    }
+
+    function makeSvgImage(product, lang) {
+      const brand = (getDisplayBrand(product) || "A").split(/\s+/).slice(0,2).map(s => s[0] || "").join("").toUpperCase();
+      const name = (lang === "ar" ? (product.product_ar || product.product_en || "") : (product.product_en || product.product_ar || ""));
+      const short = String(name).trim().slice(0, 28);
+      const sku = skuLabel(product).slice(0, 10);
+      const bg1 = "#0ea5e9";
+      const bg2 = "#2563eb";
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="800" height="700" viewBox="0 0 800 700">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="${bg1}"/>
+              <stop offset="100%" stop-color="${bg2}"/>
+            </linearGradient>
+            <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#0f172a" flood-opacity=".22"/>
+            </filter>
+          </defs>
+          <rect width="800" height="700" rx="48" fill="url(#g)"/>
+          <circle cx="150" cy="130" r="84" fill="rgba(255,255,255,.13)"/>
+          <circle cx="690" cy="120" r="110" fill="rgba(255,255,255,.08)"/>
+          <rect x="84" y="92" width="632" height="516" rx="36" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.18)"/>
+          <g filter="url(#s)">
+            <circle cx="400" cy="260" r="126" fill="rgba(255,255,255,.14)"/>
+            <circle cx="400" cy="260" r="102" fill="rgba(255,255,255,.20)"/>
+            <text x="400" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="66" font-weight="700" fill="#fff">${escapeHtml(brand || "A")}</text>
+          </g>
+          <text x="400" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#fff">${escapeHtml(short || "Alahram Store")}</text>
+          <text x="400" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,.92)">${escapeHtml(sku)}</text>
+        </svg>`;
+      return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+    }
+
+    function productImage(product) {
+      return product.image || product.img || product.image_url || makeSvgImage(product, state.lang);
+    }
+
+    function searchableBlob(p) {
+      return normalizeText([
+        p.sku_id, p.item_code, p.product_ar, p.product_en, p.desc_ar, p.desc_en,
+        p.brand, p.category, p.size, p.pack, p.chemistry, p.series, p.search_keywords
+      ].filter(Boolean).join(" "));
+    }
+
+    function compareBySort(a, b) {
+      const na = getName(a), nb = getName(b);
+      const pa = getDisplayPrice(a), pb = getDisplayPrice(b);
+      switch (state.sort) {
+        case "name-asc": return na.localeCompare(nb, state.lang === "ar" ? "ar" : "en");
+        case "name-desc": return nb.localeCompare(na, state.lang === "ar" ? "ar" : "en");
+        case "price-asc": return pa - pb;
+        case "price-desc": return pb - pa;
+        default:
+          const brandA = getDisplayBrand(a), brandB = getDisplayBrand(b);
+          if (brandA !== brandB) return brandA.localeCompare(brandB);
+          return na.localeCompare(nb, state.lang === "ar" ? "ar" : "en");
+      }
+    }
+
+    function applyFilters() {
+      const q = normalizeText(state.search);
+      let result = [...state.products];
+
+      if (state.brand !== "all") {
+        result = result.filter(p => normalizeText(getDisplayBrand(p)) === normalizeText(state.brand));
+      }
+      if (state.category !== "all") {
+        result = result.filter(p => normalizeText(p.category) === normalizeText(state.category));
+      }
+      if (q) {
+        result = result.filter(p => searchableBlob(p).includes(q));
+      }
+
+      result.sort(compareBySort);
+      state.filtered = result;
+    }
+
+    function renderFilterOptions() {
+      const brands = uniqueBrands(state.products);
+      const categories = uniqueCategories(state.products);
+
+      els.brandFilter.innerHTML = [
+        `<option value="all">${escapeHtml(t("brandAll"))}</option>`,
+        ...brands.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`)
+      ].join("");
+
+      els.categoryFilter.innerHTML = [
+        `<option value="all">${escapeHtml(t("categoryAll"))}</option>`,
+        ...categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`)
+      ].join("");
+
+      els.brandFilter.value = state.brand;
+      els.categoryFilter.value = state.category;
+      els.sortFilter.value = state.sort;
+
+      const chips = [
+        { key: "all", label: t("brandAll"), type: "brand" },
+        ...brands.slice(0, 5).map(b => ({ key: b, label: b, type: "brand" })),
+        ...categories.slice(0, 5).map(c => ({ key: c, label: c, type: "category" }))
+      ];
+
+      els.quickChips.innerHTML = chips.map(ch => `
+        <button class="chip-btn ${((ch.type === "brand" && state.brand === ch.key) || (ch.type === "category" && state.category === ch.key) || (ch.key === "all" && state.brand === "all" && state.category === "all")) ? "active" : ""}"
+                data-type="${ch.type}" data-key="${escapeHtml(ch.key)}">${escapeHtml(ch.label)}</button>
+      `).join("");
+    }
+
+    function renderProducts() {
+      const list = state.filtered;
+      if (state.loading) {
+        els.productGrid.innerHTML = `
+          <div class="sk-grid">
+            ${Array.from({length: 8}).map(() => `<div class="skeleton sk-card"></div>`).join("")}
+          </div>`;
+        return;
+      }
+
+      if (!list.length) {
+        els.productGrid.innerHTML = `
+          <div class="empty">
+            <div style="font-size:1.2rem;font-weight:900;margin-bottom:8px">${escapeHtml(t("noResults"))}</div>
+            <div>${escapeHtml(t("search"))}</div>
+          </div>`;
+        return;
+      }
+
+      els.productGrid.innerHTML = list.map((p, idx) => {
+        const name = getName(p);
+        const brand = getDisplayBrand(p);
+        const category = String(p.category || "").trim();
+        const size = String(p.size || "").trim();
+        const pack = String(p.pack || "").trim();
+        const price = getDisplayPrice(p);
+        const inCartQty = state.cart.find(c => c.sku_id === skuLabel(p))?.qty || 0;
+        const meta = [
+          brand ? `${t("brand")}: ${brand}` : "",
+          category ? `${t("category")}: ${category}` : "",
+          size ? `${t("size")}: ${size}` : "",
+          pack ? `${t("pack")}: ${pack}` : "",
+          skuLabel(p) ? `${t("code")}: ${skuLabel(p)}` : ""
+        ].filter(Boolean);
+
+        return `
+          <article class="card">
+            <div class="thumb">
+              <img src="${escapeHtml(productImage(p))}" alt="${escapeHtml(name)}" loading="lazy" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}'">
+              <div class="badge-row">
+                <span class="badge">${escapeHtml(brand || (state.lang === "ar" ? "بدون براند" : "No brand"))}</span>
+                <span class="badge gray">${escapeHtml(skuLabel(p) || "")}</span>
+              </div>
+            </div>
+            <div class="body">
+              <h3 class="title">${escapeHtml(name)}</h3>
+              <div class="sub">${meta.slice(0, 2).map(m => `<span>• ${escapeHtml(m)}</span>`).join("")}</div>
+              <div class="price-row">
+                <div>
+                  <div class="price">${escapeHtml(formatMoney(price))}</div>
+                  <div class="meta">${escapeHtml(meta.slice(2).join(" • "))}</div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="add" data-add="${escapeHtml(skuLabel(p))}">${escapeHtml(t("addToCart"))}${inCartQty ? ` (${inCartQty})` : ""}</button>
+                <button class="mini" data-fav="${escapeHtml(skuLabel(p))}" title="Info">ℹ</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderCart() {
+      const totalUnits = state.cart.reduce((sum, it) => sum + it.qty, 0);
+      const totalPrice = state.cart.reduce((sum, it) => sum + (it.price * it.qty), 0);
+      els.cartCountTop.textContent = totalUnits;
+      els.cartCountFab.textContent = totalUnits;
+      els.cartTotal.textContent = formatMoney(totalPrice);
+
+      if (!state.cart.length) {
+        els.cartItems.innerHTML = `
+          <div class="empty" style="margin-top:8px">
+            <div style="font-size:1.1rem;font-weight:900;margin-bottom:6px">${escapeHtml(t("cartEmpty"))}</div>
+            <div>${escapeHtml(t("browse"))}</div>
+          </div>`;
+        return;
+      }
+
+      els.cartItems.innerHTML = state.cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-thumb">
+            <img src="${escapeHtml(item.image || PLACEHOLDER_IMAGE)}" alt="${escapeHtml(item.name)}" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}'">
+          </div>
+          <div>
+            <p class="cart-title">${escapeHtml(item.name)}</p>
+            <div class="cart-meta">
+              ${item.brand ? `<span>${escapeHtml(item.brand)}</span>` : ""}
+              ${item.sku_id ? `<span>${escapeHtml(item.sku_id)}</span>` : ""}
+              <span>${escapeHtml(formatMoney(item.price))}</span>
+            </div>
+            <div class="qty">
+              <button data-dec="${escapeHtml(item.sku_id)}">−</button>
+              <span>${item.qty}</span>
+              <button data-inc="${escapeHtml(item.sku_id)}">+</button>
+              <button class="mini" data-remove="${escapeHtml(item.sku_id)}" title="${state.lang === "ar" ? "إزالة" : "Remove"}">🗑</button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderStats() {
+      document.getElementById("productsCount").textContent = state.products.length;
+      document.getElementById("brandsCount").textContent = uniqueBrands(state.products).length;
+    }
+
+    function renderAll() {
+      renderStats();
+      renderFilterOptions();
+      applyFilters();
+      renderProducts();
+      renderCart();
+    }
+
+    function addToCart(product) {
+      const sku = skuLabel(product) || `${getName(product)}-${getDisplayBrand(product)}`.trim();
+      const item = state.cart.find(c => c.sku_id === sku);
+      const payload = {
+        sku_id: sku,
+        name: getName(product),
+        brand: getDisplayBrand(product),
+        price: getDisplayPrice(product),
+        qty: 1,
+        image: productImage(product)
+      };
+      if (item) item.qty += 1;
+      else state.cart.unshift(payload);
+      saveCart();
+      renderCart();
+      showToast(t("added"));
+    }
+
+    function changeQty(sku, delta) {
+      const item = state.cart.find(c => c.sku_id === sku);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) state.cart = state.cart.filter(c => c.sku_id !== sku);
+      saveCart();
+      renderCart();
+    }
+
+    function removeItem(sku) {
+      state.cart = state.cart.filter(c => c.sku_id !== sku);
+      saveCart();
+      renderCart();
+      showToast(t("removed"));
+    }
+
+    function clearCart() {
+      state.cart = [];
+      saveCart();
+      renderCart();
+      showToast(t("cartCleared"));
+    }
+
+    function openDrawer() {
+      els.drawerOverlay.classList.add("show");
+      els.cartDrawer.classList.add("show");
+      els.cartDrawer.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDrawer() {
+      els.drawerOverlay.classList.remove("show");
+      els.cartDrawer.classList.remove("show");
+      els.cartDrawer.setAttribute("aria-hidden", "true");
+    }
+
+    function openCheckout() {
+      if (!state.cart.length) {
+        showToast(t("cartEmpty"));
+        return;
+      }
+      els.modalOverlay.classList.add("show");
+      els.checkoutModal.classList.add("show");
+      els.checkoutModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeCheckout() {
+      els.modalOverlay.classList.remove("show");
+      els.checkoutModal.classList.remove("show");
+      els.checkoutModal.setAttribute("aria-hidden", "true");
+    }
+
+    function showToast(message) {
+      const box = document.getElementById("toast");
+      box.textContent = message;
+      box.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => box.classList.remove("show"), 1800);
+    }
+
+    function validateForm() {
+      const errors = [];
+      if (!els.custName.value.trim()) errors.push(t("customerName"));
+      if (!els.custPhone.value.trim()) errors.push(t("phone"));
+      if (!els.custAddress.value.trim()) errors.push(t("address"));
+      return errors;
+    }
+
+    function buildMessage() {
+      const total = state.cart.reduce((sum, it) => sum + (it.price * it.qty), 0);
+      const lines = [];
+      if (state.lang === "ar") {
+        lines.push("طلب جديد من متجر الأهرام");
+        lines.push("————————————");
+        lines.push(`الاسم: ${els.custName.value.trim()}`);
+        lines.push(`رقم التليفون: ${els.custPhone.value.trim()}`);
+        lines.push(`العنوان: ${els.custAddress.value.trim()}`);
+        if (els.custLocation.value.trim()) lines.push(`اللوكيشن: ${els.custLocation.value.trim()}`);
+        lines.push("————————————");
+        lines.push("الطلبات:");
+      } else {
+        lines.push("New order from Alahram Store");
+        lines.push("————————————");
+        lines.push(`Name: ${els.custName.value.trim()}`);
+        lines.push(`Phone: ${els.custPhone.value.trim()}`);
+        lines.push(`Address: ${els.custAddress.value.trim()}`);
+        if (els.custLocation.value.trim()) lines.push(`Location: ${els.custLocation.value.trim()}`);
+        lines.push("————————————");
+        lines.push("Items:");
+      }
+
+      state.cart.forEach((item, index) => {
+        const line = state.lang === "ar"
+          ? `${index + 1}) ${item.name} × ${item.qty} = ${formatMoney(item.price * item.qty)}`
+          : `${index + 1}) ${item.name} x ${item.qty} = ${formatMoney(item.price * item.qty)}`;
+        lines.push(line);
+      });
+
+      lines.push("————————————");
+      lines.push(`${state.lang === "ar" ? "الإجمالي" : "Total"}: ${formatMoney(total)}`);
+      lines.push("————————————");
+      lines.push(state.lang === "ar" ? "يرجى تأكيد الطلب." : "Please confirm the order.");
+      return lines.join("\n");
+    }
+
+    function sendWhatsAppOrder() {
+      const errors = validateForm();
+      if (errors.length) {
+        els.formErrors.textContent = `${t("requiredFields")} (${errors.join("، ")})`;
+        els.formErrors.classList.add("show");
+        return;
+      }
+      els.formErrors.classList.remove("show");
+      const msg = buildMessage();
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+      showToast(t("orderSent"));
+    }
+
+    async function loadProducts() {
+      state.loading = true;
+      renderProducts();
+      try {
+        const res = await fetch(`${API_URL}?v=${Date.now()}`, { cache: "no-store" });
+        const text = await res.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          data = [];
+        }
+        if (Array.isArray(data)) {
+          state.products = data.filter(Boolean);
+        } else if (data && Array.isArray(data.data)) {
+          state.products = data.data.filter(Boolean);
+        } else if (data && Array.isArray(data.items)) {
+          state.products = data.items.filter(Boolean);
+        } else {
+          state.products = [];
+        }
+        state.loading = false;
+        renderAll();
+        showToast(`${state.products.length} ${state.lang === "ar" ? "منتج" : "products"}`);
+      } catch (err) {
+        state.loading = false;
+        els.productGrid.innerHTML = `
+          <div class="empty">
+            <div style="font-size:1.15rem;font-weight:900;margin-bottom:8px">${escapeHtml(t("loadError"))}</div>
+            <div>${escapeHtml(String(err?.message || ""))}</div>
+          </div>`;
+      }
+    }
+
+    function onQuickChipClick(btn) {
+      const type = btn.dataset.type;
+      const key = btn.dataset.key;
+      if (type === "brand") {
+        state.brand = key;
+        els.brandFilter.value = key;
+      } else if (type === "category") {
+        state.category = key;
+        els.categoryFilter.value = key;
+      }
+      renderAll();
+    }
+
+    function debounce(fn, wait = 180) {
+      let t;
+      return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), wait);
+      };
+    }
+
+    const handleSearch = debounce(() => {
+      state.search = els.searchInput.value;
+      applyFilters();
+      renderProducts();
+    }, 160);
+
+    els.searchInput.addEventListener("input", handleSearch);
+    els.brandFilter.addEventListener("change", () => { state.brand = els.brandFilter.value; renderAll(); });
+    els.categoryFilter.addEventListener("change", () => { state.category = els.categoryFilter.value; renderAll(); });
+    els.sortFilter.addEventListener("change", () => { state.sort = els.sortFilter.value; renderProducts(); });
+    els.resetBtn.addEventListener("click", () => {
+      state.search = "";
+      state.brand = "all";
+      state.category = "all";
+      state.sort = "featured";
+      els.searchInput.value = "";
+      els.brandFilter.value = "all";
+      els.categoryFilter.value = "all";
+      els.sortFilter.value = "featured";
+      renderAll();
+    });
+
+    els.quickChips.addEventListener("click", (e) => {
+      const btn = e.target.closest(".chip-btn");
+      if (!btn) return;
+      onQuickChipClick(btn);
+    });
+
+    els.productGrid.addEventListener("click", (e) => {
+      const addBtn = e.target.closest("[data-add]");
+      const favBtn = e.target.closest("[data-fav]");
+      if (addBtn) {
+        const sku = addBtn.dataset.add;
+        const product = state.products.find(p => skuLabel(p) === sku);
+        if (product) addToCart(product);
+      }
+      if (favBtn) {
+        const sku = favBtn.dataset.fav;
+        const product = state.products.find(p => skuLabel(p) === sku);
+        if (product) {
+          showToast(`${getName(product)} • ${getDisplayBrand(product) || ""}`.trim());
+        }
+      }
+    });
+
+    els.cartItems.addEventListener("click", (e) => {
+      const dec = e.target.closest("[data-dec]");
+      const inc = e.target.closest("[data-inc]");
+      const remove = e.target.closest("[data-remove]");
+      if (dec) changeQty(dec.dataset.dec, -1);
+      if (inc) changeQty(inc.dataset.inc, +1);
+      if (remove) removeItem(remove.dataset.remove);
+    });
+
+    els.openCartBtn.addEventListener("click", openDrawer);
+    els.cartFab.addEventListener("click", openDrawer);
+    els.closeCartBtn.addEventListener("click", closeDrawer);
+    els.drawerOverlay.addEventListener("click", closeDrawer);
+    els.checkoutBtn.addEventListener("click", () => { closeDrawer(); openCheckout(); });
+    els.clearCartBtn.addEventListener("click", clearCart);
+    els.closeCheckoutBtn.addEventListener("click", closeCheckout);
+    els.modalOverlay.addEventListener("click", closeCheckout);
+    els.backToCartBtn.addEventListener("click", () => { closeCheckout(); openDrawer(); });
+    els.checkoutForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      sendWhatsAppOrder();
+    });
+    els.langToggleBtn.addEventListener("click", () => setLang(state.lang === "ar" ? "en" : "ar"));
+    document.getElementById("scrollToProductsBtn").addEventListener("click", () => {
+      document.getElementById("productGrid").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    document.getElementById("openCartBtn").addEventListener("click", openDrawer);
+
+    setLang(state.lang);
+    updateStaticText();
+    renderAll();
+    loadProducts();
+  </script>
+</body>
+</html>
