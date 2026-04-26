@@ -1,0 +1,37 @@
+.order-card {
+  background: #111;
+  color: #fff;
+  padding: 12px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.open-btn {
+  margin-top: 10px;
+}
+
+.sheet {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  right: 0;
+  height: 80%;
+  background: #fff;
+  transition: 0.3s;
+  border-radius: 20px 20px 0 0;
+}
+
+.sheet.open {
+  bottom: 0;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+}
+
+.backdrop.show {
+  display: block;
+}
