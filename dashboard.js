@@ -883,7 +883,7 @@ function openOrder(order) {
   if (saveBtn) {
     saveBtn.onclick = async () => {
       try {
-        await apiMutate('orders', { id: `eq.${encodeURIComponent(order.id)}` }, { status: document.getElementById('orderStatusSel').value });
+        await apiMutate('orders', { id: `eq.${order.id}` }, { status: document.getElementById('orderStatusSel').value });
         toast('تم تحديث حالة الطلب');
         setSheet('detailsModal', false);
         await loadData();
