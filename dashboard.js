@@ -878,43 +878,21 @@ function openOrder(order) {
   `;
 
   setSheet('detailsModal', true);
-const saveBtn = document.getElementById('saveOrderStatus');
 
-if (saveBtn) {
-  saveBtn.onclick = async () => {
-
-    console.log("CLICKED SAVE BUTTON");
-
-    const newStatus = document.getElementById('orderStatusSel').value;
-
-    console.log("NEW STATUS:", newStatus);
-    console.log("ORDER ID:", order.id);
-
-    try {
-
-      console.log("CALLING apiMutate...");
-
-      await apiMutate(
-        'orders',
-        { id: `eq.${order.id}` },
-        { status: newStatus }
-      );
-
-      console.log("UPDATE DONE");
-
-      toast('تم تحديث حالة الطلب');
-
-      setSheet('detailsModal', false);
-      await loadData();
-
-    } catch (error) {
-
-      console.error("ERROR:", error);
-      toast('تعذر تحديث الحالة');
-
-    }
-
-  };
+  const saveBtn = document.getElementById('saveOrderStatus');
+  if (saveBtn) {
+    saveBtn.onclick = async () => {    console.log("CLICKED SAVE BUTTON");    const newStatus = document.getElementById('orderStatusSel').value;   console.log("NEW STATUS:", newStatus);   console.log("ORDER ID:", order.id);    try {      console.log("CALLING apiMutate...");      await apiMutate(       'orders',       { id: `eq.${order.id}` },       { status: newStatus }     );      console.log("UPDATE DONE");      toast('تم تحديث حالة الطلب');      setSheet('detailsModal', false);     await loadData();    } catch (error) {     console.error("ERROR:", error);     toast('تعذر تحديث الحالة');   }  };
+      try {
+        await apiMutate('orders', { id: `eq.${order.id}` }, { status: document.getElementById('orderStatusSel').value });
+        toast('تم تحديث حالة الطلب');
+        setSheet('detailsModal', false);
+        await loadData();
+      } catch (error) {
+        console.error(error);
+        toast('تعذر تحديث الحالة');
+      }
+    };
+  }
 }
 function renderRepDetails(rep) {
   state.repDetail = rep;
