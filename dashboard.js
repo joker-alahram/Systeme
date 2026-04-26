@@ -517,7 +517,7 @@ function renderHome() {
         <div class="meta-box"><span>التاريخ</span><strong>${fmtDate(order.created_at)}</strong></div>
       </div>
       <div class="actions">
-        <button class="ghost-btn" data-act="view-order" data-id="${esc(order.id)}">عرض</button>
+        <button class="ghost-btn" data-act="view-order" data-id="$(order.id)}">عرض</button>
       </div>
     </article>
   `).join('') : emptyCard('لا توجد طلبات');
