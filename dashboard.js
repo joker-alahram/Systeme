@@ -337,43 +337,25 @@ function apiQuery(table, params = {}) {
   }).then((res) => res.json());
 }
 
-document.addEventListener("click", async (e) => {
-
-  if (e.target.id !== "saveOrderStatus") return;
-
-  console.log("CLICKED SAVE BUTTON");
-
-  const newStatus = document.getElementById('orderStatusSel')?.value;
-
-  if (!newStatus) {
-    console.warn("NO STATUS");
-    return;
-  }
-
-  console.log("ORDER ID:", e.target.dataset.id);
-
-  try {
-
-    await apiMutate(
-      'orders',
-      { id: `eq.${e.target.dataset.id}` },
-      { status: newStatus }
-    );
-
-    console.log("PATCH SENT ✔");
-
-    toast('تم تحديث حالة الطلب');
-
-    setSheet('detailsModal', false);
-    await loadData();
-
- catch (err) {
-  console.error("FULL ERROR:", err);
-  alert(err.message); // 👈 ده المهم
-  toast('فشل تحديث الحالة');
+async function apiMutate(table, params = {}, body = {}) {
+  const url = new URL(`${CONFIG.baseUrl}/${table}`);
+  Object.keys(params).forEach((k) => {
+    if (params[k]) url.searchParams.append(k, params[k]);
+  });
+  const res = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      apikey: CONFIG.apiKey,
+      Authorization: `Bearer ${CONFIG.apiKey}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=representation',
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const txt = await res.text();
+  return txt ? JSON.parse(txt) : [];
 }
-
-});
 
 function normalizeRows(value) {
   return Array.isArray(value) ? value : [];
