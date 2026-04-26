@@ -367,12 +367,11 @@ document.addEventListener("click", async (e) => {
     setSheet('detailsModal', false);
     await loadData();
 
-  } catch (err) {
-
-    console.error("ERROR:", err);
-    toast('فشل تحديث الحالة');
-
-  }
+ catch (err) {
+  console.error("FULL ERROR:", err);
+  alert(err.message); // 👈 ده المهم
+  toast('فشل تحديث الحالة');
+}
 
 });
 
