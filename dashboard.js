@@ -517,7 +517,7 @@ function renderHome() {
         <div class="meta-box"><span>التاريخ</span><strong>${fmtDate(order.created_at)}</strong></div>
       </div>
       <div class="actions">
-        <button class="ghost-btn" data-act="view-order" data-id="$(order.id)}">عرض</button>
+        <button class="ghost-btn" data-act="view-order" data-id="${esc(order.id)}">عرض</button>
       </div>
     </article>
   `).join('') : emptyCard('لا توجد طلبات');
@@ -1198,56 +1198,6 @@ function bindEvents() {
       return;
     }
 
-    // 🔥 SAVE ORDER STATUS (FIX FINAL)
-if (event.target.id === 'saveOrderStatus') {
-
-  event.preventDefault();
-
-  const btn = event.target;
-  const orderId = btn.getAttribute("data-id");
-  const newStatus = document.getElementById('orderStatusSel')?.value;
-
-  console.log("SAVE CLICKED:", orderId, newStatus);
-
-  if (!orderId) {
-    alert("❌ مفيش orderId");
-    return;
-  }
-
-  try {
-
-    const res = await fetch(`${CONFIG.baseUrl}/orders?id=eq.${orderId}`, {
-      method: "PATCH",
-      headers: {
-        apikey: CONFIG.apiKey,
-        Authorization: `Bearer ${CONFIG.apiKey}`,
-        "Content-Type": "application/json",
-        Prefer: "return=representation"
-      },
-      body: JSON.stringify({ status: newStatus })
-    });
-
-    const text = await res.text();
-
-    console.log("RESPONSE:", text);
-
-    if (!res.ok) {
-      alert("❌ ERROR:\n" + text);
-      return;
-    }
-
-    alert("✅ تم تحديث الحالة");
-
-    setSheet('detailsModal', false);
-    await loadData();
-
-  } catch (err) {
-    console.error(err);
-    alert("❌ EXCEPTION");
-  }
-
-  return;
-}
     const action = event.target.closest('[data-act]');
     if (!action) return;
     const act = action.dataset.act;
