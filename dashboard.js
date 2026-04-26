@@ -881,9 +881,9 @@ function openOrder(order) {
 
   const saveBtn = document.getElementById('saveOrderStatus');
   if (saveBtn) {
-    saveBtn.onclick = async () => {    console.log("CLICKED SAVE BUTTON");    const newStatus = document.getElementById('orderStatusSel').value;   console.log("NEW STATUS:", newStatus);   console.log("ORDER ID:", order.id);    try {      console.log("CALLING apiMutate...");      await apiMutate(       'orders',       { id: `eq.${order.id}` },       { status: newStatus }     );      console.log("UPDATE DONE");      toast('تم تحديث حالة الطلب');      setSheet('detailsModal', false);     await loadData();    } catch (error) {     console.error("ERROR:", error);     toast('تعذر تحديث الحالة');   }  };
+    saveBtn.onclick = async () => {
       try {
-        await apiMutate('orders', { id: `eq.${order.id}` }, { status: document.getElementById('orderStatusSel').value });
+        await apiMutate('orders', { id: `eq.${encodeURIComponent(order.id)}` }, { status: document.getElementById('orderStatusSel').value });
         toast('تم تحديث حالة الطلب');
         setSheet('detailsModal', false);
         await loadData();
@@ -894,6 +894,7 @@ function openOrder(order) {
     };
   }
 }
+
 function renderRepDetails(rep) {
   state.repDetail = rep;
   const repOrders = state.orders.filter((order) => order.user_id === rep.id && (!state.reportStart || new Date(order.created_at) >= new Date(state.reportStart)) && (!state.reportEnd || new Date(order.created_at) <= new Date(new Date(state.reportEnd).getTime() + 24 * 60 * 60 * 1000 - 1)));
